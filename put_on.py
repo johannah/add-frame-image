@@ -218,7 +218,7 @@ def add_mustache(frame):
 if __name__ == '__main__':
      
 
-## collect video input from first webcam on system
+    ## collect video input from first webcam on system
     video_capture = cv2.VideoCapture(0)
      
     while True:
@@ -236,8 +236,7 @@ if __name__ == '__main__':
         # NOTE;  x86 systems may need to remove: " 0xFF == ord('q')"
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
-# 
-# When everything is done, release the capture
-video_capture.release()
-cv2.destroyAllWindows()
+    # When everything is done, release the capture
+    video_capture.release()
+    cv2.destroyAllWindows()
 
