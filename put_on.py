@@ -9,29 +9,14 @@ import numpy as np
 import argparse
 import imutils
 import dlib
- 
-#-----------------------------------------------------------------------------
-#       Load and configure Haar Cascade Classifiers
-#-----------------------------------------------------------------------------
- 
-# location of OpenCV Haar Cascade Classifiers:
-baseCascadePath = "/usr/local/share/OpenCV/haarcascades/"
- 
-# xml files describing our haar cascade classifiers
-faceCascadeFilePath = baseCascadePath + "haarcascade_frontalface_default.xml"
-noseCascadeFilePath = baseCascadePath + "haarcascade_mcs_nose.xml"
- 
-# build our cv2 Cascade Classifiers
-faceCascade = cv2.CascadeClassifier(faceCascadeFilePath)
-noseCascade = cv2.CascadeClassifier(noseCascadeFilePath)
- 
+
+# based on example from https://www.pyimagesearch.com/2017/04/10/detect-eyes-nose-lips-jaw-dlib-opencv-python/
 #-----------------------------------------------------------------------------
 #       Load and configure mustache (.png with alpha transparency)
 #-----------------------------------------------------------------------------
  
 # Load our overlay image: mustache.png
 imgMustache = cv2.imread('mustache.png',-1)
-#imgMustache = cv2.imread('moose-antlers.png',-1)
  
 # Create the mask for the mustache
 orig_mask = imgMustache[:,:,3]
@@ -138,8 +123,6 @@ def add_mustache(frame):
     
         #name = 'nose'
         #i,j = face_utils.FACIAL_LANDMARKS_IDXS[name]
-        
-        # loop over the facial landmark regions individually
         #for (i, name) in enumerate(FACIAL_LANDMARKS_IDXS.keys()):
         i = 0
         name = 'mouth'
@@ -162,11 +145,9 @@ def add_mustache(frame):
             # otherwise, compute the convex hull of the facial
             # landmark coordinates points and display it
             else:
-                print(pts)
                 hull = cv2.convexHull(pts)
                 #cv2.drawContours(overlay, [hull], -1, colors[i], -1) 
                 #cv2.drawContours(image, [hull], -1, colors[i], -1) 
-                print("NAME", name)
                 if name == 'mouth':
                     nx = np.min(pts[:,0])
                     ny = np.min(pts[:,1])
@@ -174,7 +155,6 @@ def add_mustache(frame):
                     nh = np.max(pts[:,1])-np.min(pts[:,1])+1
               
                     #cv2.rectangle(image,(nx,ny),(nx+nw,ny+nh),(255,0,0),2)
-                    print(nx,ny,nw,nh)
                     cv2.rectangle(image,(nx,ny),(nx+nw,ny+nh),colors[i])
     
                     mustacheWidth =  15 * nw
@@ -191,10 +171,8 @@ def add_mustache(frame):
                     
                     opp = ry2-ry1
                     adj = rx2-rx1
-                print(opp, adj)
                 angle = -np.rad2deg(np.arctan(opp/float(adj)))
                 
-                print(angle)
                 # Check for clipping
                 if x1 < 0:
                     x1 = 0
